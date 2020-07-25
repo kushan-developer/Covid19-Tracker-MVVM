@@ -1,0 +1,174 @@
+﻿<Page
+    x:Class="Async_MVVM.Views.CountryData"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Async_MVVM.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="CountryData"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    Loaded="Page_Loaded"
+    ShowsNavigationUI="False"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <Style x:Key="ProgressBarStyles" TargetType="ProgressBar">
+            <Setter Property="Height" Value="2" />
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="IsIndeterminate" Value="True" />
+            <Setter Property="Visibility" Value="{Binding CountryData.IsNotCompleted, Converter={StaticResource BooleanToVisibilityConverter}}" />
+        </Style>
+        <Style x:Key="NewCasesIconStyles" TargetType="TextBlock">
+            <Setter Property="Text" Value="&#xE752;" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="FontSize" Value="18" />
+            <Setter Property="FontFamily" Value="Segoe MDL2 Assets" />
+            <Setter Property="FontWeight" Value="Bold" />
+        </Style>
+        <Style x:Key="NewCasesTextBlockStyles" TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Bottom" />
+            <Setter Property="FontSize" Value="18" />
+            <Setter Property="Foreground" Value="WhiteSmoke" />
+        </Style>
+    </Page.Resources>
+
+    <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <TextBlock
+            Name="CountryName"
+            Grid.Row="0"
+            Grid.ColumnSpan="3"
+            Margin="0,0,0,30"
+            HorizontalAlignment="Center"
+            FontSize="34"
+            FontWeight="Bold"
+            Foreground="White"
+            Text="{Binding CountryData.Result.Country}" />
+        <WrapPanel
+            Name="StatsWrapPanel"
+            Grid.Row="1"
+            Width="{Binding ElementName=Window, Path=ActualWidth}"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Orientation="Horizontal">
+            <Grid
+                Name="ConfWidth"
+                Margin="8"
+                VerticalAlignment="Top"
+                Background="#3d3d3d">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <ProgressBar Name="ProgressIndicatorConf" Style="{StaticResource ProgressBarStyles}" />
+                <TextBlock
+                    Name="ConfirmedCases"
+                    Style="{StaticResource CasesTextBlockStyles}"
+                    Text="{Binding CountryData.Result.TotalConfirmed}" />
+                <TextBlock
+                    Name="ConfirmedCasesLoading"
+                    Style="{StaticResource CasesTextBlockStyles}"
+                    Text="Fetching..."
+                    Visibility="{Binding CountryData.IsNotCompleted, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                <StackPanel
+                    Name="StackPanelConf"
+                    Grid.Row="1"
+                    HorizontalAlignment="Center"
+                    Orientation="Horizontal"
+                    Visibility="{Binding CountryData.IsSuccessfullyCompleted, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <TextBlock Foreground="Yellow" Style="{StaticResource NewCasesIconStyles}" />
+                    <TextBlock
+                        Name="NewConf"
+                        Style="{StaticResource NewCasesTextBlockStyles}"
+                        Text="{Binding CountryData.Result.NewConfirmed}" />
+                </StackPanel>
+                <TextBlock
+                    Grid.Row="2"
+                    Foreground="Yellow"
+                    Style="{StaticResource TitleTextBlockStyles}"
+                    Text="Confirmed" />
+            </Grid>
+            <Grid
+                Width="{Binding ActualWidth, ElementName=ConfWidth}"
+                Margin="8"
+                VerticalAlignment="Top"
+                Background="#3d3d3d">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <ProgressBar Name="ProgressIndicatorFatal" Style="{StaticResource ProgressBarStyles}" />
+                <TextBlock
+                    Name="FatalCases"
+                    Style="{StaticResource CasesTextBlockStyles}"
+                    Text="{Binding CountryData.Result.TotalDeaths}" />
+                <TextBlock
+                    Name="FatalCasesLoading"
+                    Style="{StaticResource CasesTextBlockStyles}"
+                    Text="Fetching..."
+                    Visibility="{Binding CountryData.IsNotCompleted, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                <StackPanel
+                    Name="StackPanelFatal"
+                    Grid.Row="1"
+                    HorizontalAlignment="Center"
+                    Orientation="Horizontal"
+                    Visibility="{Binding CountryData.IsSuccessfullyCompleted, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <TextBlock Foreground="Red" Style="{StaticResource NewCasesIconStyles}" />
+                    <TextBlock
+                        Name="NewFatal"
+                        Style="{StaticResource NewCasesTextBlockStyles}"
+                        Text="{Binding CountryData.Result.NewDeaths}" />
+                </StackPanel>
+                <TextBlock
+                    Grid.Row="2"
+                    Foreground="Red"
+                    Style="{StaticResource TitleTextBlockStyles}"
+                    Text="Fatal Cases" />
+            </Grid>
+            <Grid
+                Width="{Binding ActualWidth, ElementName=ConfWidth}"
+                Margin="8"
+                VerticalAlignment="Top"
+                Background="#3d3d3d">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <ProgressBar Name="ProgressIndicatorRec" Style="{StaticResource ProgressBarStyles}" />
+                <TextBlock
+                    Name="RecoveredCases"
+                    Style="{StaticResource CasesTextBlockStyles}"
+                    Text="{Binding CountryData.Result.TotalRecovered}" />
+                <TextBlock
+                    Name="RecoveredCasesLoading"
+                    Style="{StaticResource CasesTextBlockStyles}"
+                    Text="Fetching..."
+                    Visibility="{Binding CountryData.IsNotCompleted, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                <StackPanel
+                    Name="StackPanelRec"
+                    Grid.Row="1"
+                    HorizontalAlignment="Center"
+                    Orientation="Horizontal"
+                    Visibility="{Binding CountryData.IsSuccessfullyCompleted, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <TextBlock Foreground="LawnGreen" Style="{StaticResource NewCasesIconStyles}" />
+                    <TextBlock
+                        Name="NewRec"
+                        Style="{StaticResource NewCasesTextBlockStyles}"
+                        Text="{Binding CountryData.Result.NewRecovered}" />
+                </StackPanel>
+                <TextBlock
+                    Grid.Row="2"
+                    Foreground="LawnGreen"
+                    Style="{StaticResource TitleTextBlockStyles}"
+                    Text="Recovered" />
+            </Grid>
+        </WrapPanel>
+    </Grid>
+</Page>

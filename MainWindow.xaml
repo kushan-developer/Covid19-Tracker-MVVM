@@ -1,0 +1,104 @@
+﻿<Window
+    x:Class="Async_MVVM.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:editors="clr-namespace:WpfAutoCompleteControls.Editors;assembly=WpfAutoCompleteControls"
+    xmlns:local="clr-namespace:Async_MVVM"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Name="Window"
+    Title="Covid19 - Tracker"
+    MinWidth="478"
+    MinHeight="625"
+    Focusable="True"
+    SizeChanged="Window_SizeChanged"
+    mc:Ignorable="d">
+    <Grid Name="ContentGrid" Background="Black">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <TextBlock
+            Padding="12,12,12,12"
+            HorizontalAlignment="Stretch"
+            Background="#3d3d3d"
+            FontSize="26"
+            FontWeight="Bold"
+            Foreground="White"
+            Text="Covid19 Tracker" />
+        <Grid
+            Grid.Row="0"
+            Grid.Column="1"
+            Background="#3d3d3d">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Button
+                Name="HomeButton"
+                Grid.Column="1"
+                Height="30"
+                Margin="8"
+                Padding="5,3"
+                VerticalAlignment="Center"
+                Background="Transparent"
+                Click="HomeButton_Click"
+                Content="&#xE80F;"
+                FontFamily="Segoe MDL2 Assets"
+                FontSize="18"
+                Foreground="White" />
+            <editors:AutoCompleteTextBox
+                Name="CountrySearchBox"
+                Grid.Column="2"
+                Width="250"
+                Height="30"
+                BorderThickness="0"
+                DisplayMemberPath="Name"
+                FontSize="18"
+                KeyUp="AutoCompleteTextBox_KeyUp"
+                Watermark="Country name...">
+
+                <editors:AutoCompleteTextBox.ItemTemplate>
+                    <DataTemplate DataType="local:string">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock
+                                Foreground="Black"
+                                Text="{Binding Name}"
+                                TextWrapping="Wrap" />
+                        </StackPanel>
+                    </DataTemplate>
+                </editors:AutoCompleteTextBox.ItemTemplate>
+
+                <editors:AutoCompleteTextBox.Provider>
+                    <local:SuggestionProvider />
+                </editors:AutoCompleteTextBox.Provider>
+            </editors:AutoCompleteTextBox>
+            <Button
+                Name="CountrySearchButton"
+                Grid.Column="3"
+                Height="30"
+                Margin="0,0,12,0"
+                Padding="8"
+                VerticalAlignment="Center"
+                Click="CountrySearchButton_Click"
+                Content="&#xE721;"
+                FontFamily="Segoe MDL2 Assets" />
+        </Grid>
+
+        <Frame
+            Name="MainPageFrame"
+            Grid.Row="2"
+            Grid.ColumnSpan="2"
+            NavigationUIVisibility="Hidden" />
+
+    </Grid>
+</Window>
+
+
